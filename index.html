@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>4 Years of Us 💕</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Josefin+Sans:wght@100;300;400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --rose:    #e8637a;
+      --blush:   #f5c6ce;
+      --cream:   #fdf6f0;
+      --gold:    #c9a96e;
+      --deep:    #2b1b24;
+      --mid:     #7a4f5e;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--deep);
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ── CONFETTI CANVAS ── */
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(ellipse 80% 60% at 50% 110%, #f7d6dc 0%, transparent 65%),
+                  radial-gradient(ellipse 60% 40% at 80% -10%, #fce4c0 0%, transparent 55%),
+                  var(--cream);
+    }
+
+    .petal-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .petal {
+      position: absolute;
+      width: clamp(20px, 4vw, 50px);
+      aspect-ratio: 1;
+      border-radius: 50% 0 50% 0;
+      opacity: 0.18;
+      animation: floatPetal linear infinite;
+    }
+
+    @keyframes floatPetal {
+      0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+      10%  { opacity: 0.18; }
+      90%  { opacity: 0.12; }
+      100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+    }
+
+    .badge {
+      display: inline-block;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(0.6rem, 2vw, 0.75rem);
+      font-weight: 400;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 0.4em 1.2em;
+      margin-bottom: 1.8rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.3s forwards;
+    }
+
+    .year-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(6rem, 22vw, 16rem);
+      font-weight: 300;
+      line-height: 0.85;
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--rose);
+      position: relative;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.5s forwards;
+      user-select: none;
+    }
+
+    .year-number .fill {
+      position: absolute;
+      inset: 0;
+      -webkit-text-stroke: 0;
+      color: var(--rose);
+      clip-path: inset(100% 0 0 0);
+      animation: fillReveal 1.4s cubic-bezier(.77,0,.18,1) 1.2s forwards;
+    }
+
+    @keyframes fillReveal {
+      to { clip-path: inset(0% 0 0 0); }
+    }
+
+    .headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.5rem, 5vw, 3rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--mid);
+      margin-top: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.9s forwards;
+    }
+
+    .sub {
+      font-size: clamp(0.7rem, 2.2vw, 0.85rem);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 0.7rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 1.1s forwards;
+    }
+
+    .heart-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 2.5rem auto 0;
+      width: min(320px, 70vw);
+      opacity: 0;
+      animation: fadeUp 0.8s ease 1.3s forwards;
+    }
+
+    .heart-divider::before,
+    .heart-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--blush);
+    }
+
+    .heart-icon {
+      font-size: 1.2rem;
+      animation: heartbeat 1.4s ease-in-out infinite;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      14%       { transform: scale(1.25); }
+      28%       { transform: scale(1); }
+      42%       { transform: scale(1.15); }
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      opacity: 0;
+      animation: fadeIn 1s ease 2.5s forwards;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .scroll-hint .arrow {
+      width: 1px;
+      height: 32px;
+      background: var(--gold);
+      position: relative;
+      animation: scrollArrow 1.5s ease-in-out infinite;
+    }
+
+    @keyframes scrollArrow {
+      0%, 100% { transform: scaleY(0.6); opacity: 0.4; }
+      50%       { transform: scaleY(1);   opacity: 1; }
+    }
+
+    /* ── TIMELINE ── */
+    .section {
+      padding: clamp(3rem, 8vw, 6rem) clamp(1.2rem, 5vw, 3rem);
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: clamp(0.6rem, 1.8vw, 0.72rem);
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-align: center;
+      margin-bottom: 0.6rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-style: italic;
+      text-align: center;
+      color: var(--deep);
+      margin-bottom: 3rem;
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 0;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: var(--blush);
+      transform: translateX(-50%);
+    }
+
+    .tl-item {
+      display: grid;
+      grid-template-columns: 1fr 48px 1fr;
+      gap: 0;
+      margin-bottom: 3rem;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .tl-item.visible { opacity: 1; transform: translateY(0); }
+
+    .tl-left  { text-align: right; padding-right: 1.5rem; padding-top: 0.2rem; }
+    .tl-right { text-align: left;  padding-left:  1.5rem; padding-top: 0.2rem; }
+
+    .tl-dot {
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--rose);
+      margin: 0.3rem auto 0;
+      box-shadow: 0 0 0 4px var(--blush);
+      flex-shrink: 0;
+    }
+
+    .tl-year {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 3vw, 1.4rem);
+      font-weight: 300;
+      color: var(--rose);
+    }
+
+    .tl-text {
+      font-size: clamp(0.78rem, 2.2vw, 0.88rem);
+      line-height: 1.7;
+      color: var(--mid);
+    }
+
+    .tl-emoji { font-size: 1.2rem; margin-bottom: 0.3rem; display: block; }
+
+    /* Mobile timeline collapse */
+    @media (max-width: 540px) {
+      .timeline::before { left: 20px; }
+
+      .tl-item {
+        grid-template-columns: 40px 1fr;
+        grid-template-rows: auto;
+      }
+
+      .tl-left  { display: none; }
+      .tl-dot   { margin: 0.35rem 0 0; }
+      .tl-right { padding-left: 1rem; }
+    }
+
+    /* ── MESSAGE ── */
+    .message-section {
+      background: var(--deep);
+      color: var(--cream);
+      padding: clamp(3.5rem, 9vw, 6rem) clamp(1.5rem, 6vw, 4rem);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .message-section::before {
+      content: '"';
+      position: absolute;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(12rem, 30vw, 22rem);
+      color: rgba(255,255,255,0.04);
+      top: -2rem;
+      left: -1rem;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .message-section .quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.25rem, 4vw, 2rem);
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.7;
+      max-width: 640px;
+      margin: 0 auto 2rem;
+      color: var(--blush);
+      position: relative;
+      z-index: 1;
+    }
+
+    .message-section .signature {
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* ── REASONS ── */
+    .reasons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .reason-card {
+      background: #fff;
+      border: 1px solid var(--blush);
+      border-radius: 2px;
+      padding: 1.8rem 1.5rem;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s;
+    }
+
+    .reason-card.visible {
+      opacity: 1; transform: translateY(0);
+    }
+
+    .reason-card:hover {
+      box-shadow: 0 8px 28px rgba(232,99,122,0.12);
+      transform: translateY(-3px);
+    }
+
+    .reason-card .icon { font-size: 1.8rem; margin-bottom: 0.9rem; display: block; }
+
+    .reason-card .title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--rose);
+      margin-bottom: 0.5rem;
+    }
+
+    .reason-card p {
+      font-size: 0.8rem;
+      line-height: 1.7;
+      color: var(--mid);
+    }
+
+    /* ── COUNTDOWN / STATS ── */
+    .stats-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: clamp(1.5rem, 5vw, 3rem);
+      padding: clamp(3rem, 7vw, 5rem) 1.5rem;
+      background: linear-gradient(135deg, #fdf0f3 0%, #fdf6f0 100%);
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
+      font-weight: 300;
+      color: var(--rose);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: clamp(0.62rem, 1.8vw, 0.72rem);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-top: 0.4rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 3rem 1.5rem;
+      text-align: center;
+      background: var(--deep);
+      color: var(--mid);
+    }
+
+    footer .footer-heart {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: 0.8rem;
+      animation: heartbeat 1.4s ease-in-out infinite;
+    }
+
+    footer p {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* ── UTILITY ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    /* confetti button */
+    .confetti-btn {
+      display: inline-block;
+      margin-top: 2.5rem;
+      padding: 0.9em 2.5em;
+      border: 1px solid var(--rose);
+      background: transparent;
+      color: var(--rose);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 1.8s forwards;
+    }
+
+    .confetti-btn:hover {
+      background: var(--rose);
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="petal-bg" id="petalBg"></div>
+
+  <span class="badge">A Love Story</span>
+
+  <div class="year-number" aria-label="4">
+    4
+    <span class="fill" aria-hidden="true">4</span>
+  </div>
+
+  <h1 class="headline">Years of Us</h1>
+  <p class="sub">Together · In Love · Endlessly</p>
+
+  <div class="heart-divider">
+    <span class="heart-icon">♥</span>
+  </div>
+
+  <button class="confetti-btn" onclick="burst()">Celebrate ✦</button>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <span class="arrow"></span>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-row">
+  <div class="stat"><div class="stat-num" id="s-days">1461</div><div class="stat-label">Days Together</div></div>
+  <div class="stat"><div class="stat-num">4</div><div class="stat-label">Years of Love</div></div>
+  <div class="stat"><div class="stat-num">48</div><div class="stat-label">Months of Joy</div></div>
+  <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Memories Made</div></div>
+</div>
+
+<!-- TIMELINE -->
+<section class="section">
+  <p class="section-label">Our Journey</p>
+  <h2 class="section-title">The Story So Far</h2>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-left">
+        <span class="tl-emoji">🌸</span>
+        <div class="tl-year">Year One</div>
+        <div class="tl-text">The butterflies, the firsts, the late-night calls that turned into mornings.</div>
+      </div>
+      <div><div class="tl-dot"></div></div>
+      <div class="tl-right"></div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"></div>
+      <div><div class="tl-dot"></div></div>
+      <div class="tl-right">
+        <span class="tl-emoji">🌻</span>
+        <div class="tl-year">Year Two</div>
+        <div class="tl-text">Deeper roots. Adventures planned and spontaneous. Learning each other's quiet language.</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left">
+        <span class="tl-emoji">🍂</span>
+        <div class="tl-year">Year Three</div>
+        <div class="tl-text">Growing through challenges. Choosing each other, every single day, even on the hard ones.</div>
+      </div>
+      <div><div class="tl-dot"></div></div>
+      <div class="tl-right"></div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left"></div>
+      <div><div class="tl-dot"></div></div>
+      <div class="tl-right">
+        <span class="tl-emoji">✨</span>
+        <div class="tl-year">Year Four</div>
+        <div class="tl-text">Here we are — woven together, stronger and more in love than the day it all began.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MESSAGE -->
+<section class="message-section">
+  <p class="quote">
+    Four years ago, the universe quietly rearranged itself — and somehow, impossibly, it put us in the same place at the same time. I would choose you in every version of that moment, in every lifetime.
+  </p>
+  <p class="signature">With all my heart · Always</p>
+</section>
+
+<!-- REASONS -->
+<section class="section">
+  <p class="section-label">Why I Love You</p>
+  <h2 class="section-title">A Few of Many Reasons</h2>
+
+  <div class="reasons-grid">
+    <div class="reason-card">
+      <span class="icon">😂</span>
+      <div class="title">You Make Me Laugh</div>
+      <p>No one else can turn my worst days into the funniest stories I'll tell forever.</p>
+    </div>
+    <div class="reason-card">
+      <span class="icon">🫂</span>
+      <div class="title">Your Warmth</div>
+      <p>The way you hold space for me — quietly, completely — is my favourite place in the world.</p>
+    </div>
+    <div class="reason-card">
+      <span class="icon">🌙</span>
+      <div class="title">Every Small Moment</div>
+      <p>Grocery runs, rainy mornings, boring Tuesdays — magic lives in the ordinary with you.</p>
+    </div>
+    <div class="reason-card">
+      <span class="icon">🔥</span>
+      <div class="title">You Inspire Me</div>
+      <p>Watching you pursue your dreams makes me brave enough to chase mine.</p>
+    </div>
+    <div class="reason-card">
+      <span class="icon">💬</span>
+      <div class="title">Your Honesty</div>
+      <p>You tell me the truth with kindness. That's rare. That means everything.</p>
+    </div>
+    <div class="reason-card">
+      <span class="icon">💖</span>
+      <div class="title">Just Being You</div>
+      <p>Effortless, genuine, irreplaceable. There's simply no one else like you.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-heart">♥</span>
+  <p>Happy 4th Anniversary &nbsp;·&nbsp; Here's to forever</p>
+</footer>
+
+<script>
+  /* ─── PETALS ─── */
+  const colors = ['#e8637a','#f5a7b3','#c9a96e','#f9d5a7','#d4a0b0'];
+  const bg = document.getElementById('petalBg');
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    Object.assign(p.style, {
+      left:             `${Math.random()*100}%`,
+      width:            `${20 + Math.random()*30}px`,
+      background:       colors[Math.floor(Math.random()*colors.length)],
+      animationDuration:`${6 + Math.random()*10}s`,
+      animationDelay:   `${Math.random()*10}s`,
+    });
+    bg.appendChild(p);
+  }
+
+  /* ─── SCROLL REVEAL ─── */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.tl-item, .reason-card').forEach(el => obs.observe(el));
+
+  /* ─── CONFETTI ─── */
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [], animId;
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const confColors = ['#e8637a','#f5c6ce','#c9a96e','#fce4c0','#ffffff','#d4a0b0','#f9a1ae'];
+
+  function Particle() {
+    this.reset = function() {
+      this.x  = Math.random() * canvas.width;
+      this.y  = Math.random() * canvas.height - canvas.height;
+      this.w  = 6 + Math.random() * 8;
+      this.h  = 4 + Math.random() * 6;
+      this.vx = (Math.random() - 0.5) * 2.5;
+      this.vy = 2 + Math.random() * 3.5;
+      this.rot = Math.random() * Math.PI * 2;
+      this.vr  = (Math.random() - 0.5) * 0.12;
+      this.color = confColors[Math.floor(Math.random() * confColors.length)];
+      this.shape = Math.random() < 0.5 ? 'rect' : 'circle';
+      this.alpha = 0.85 + Math.random() * 0.15;
+    };
+    this.reset();
+    this.y = Math.random() * canvas.height;
+
+    this.update = function() {
+      this.x  += this.vx;
+      this.y  += this.vy;
+      this.rot += this.vr;
+      if (this.y > canvas.height + 20) this.reset();
+    };
+
+    this.draw = function() {
+      ctx.save();
+      ctx.globalAlpha = this.alpha;
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.rot);
+      ctx.fillStyle = this.color;
+      if (this.shape === 'circle') {
+        ctx.beginPath();
+        ctx.arc(0, 0, this.w / 2, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        ctx.fillRect(-this.w/2, -this.h/2, this.w, this.h);
+      }
+      ctx.restore();
+    };
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+    animId = requestAnimationFrame(animate);
+  }
+
+  function burst() {
+    cancelAnimationFrame(animId);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles = Array.from({ length: 160 }, () => new Particle());
+    animate();
+    setTimeout(() => {
+      cancelAnimationFrame(animId);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles = [];
+    }, 5500);
+  }
+
+  /* Auto burst on load after 1.5s */
+  setTimeout(burst, 1500);
+</script>
+</body>
+</html>
